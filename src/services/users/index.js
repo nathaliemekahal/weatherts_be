@@ -13,7 +13,10 @@ usersRouter.post("/login", async (req, res, next) => {
 
     const tokens = await authenticate(user);
 
-    res.cookie("accessToken", tokens, { httpOnly: true });
+    res.cookie("accessToken", tokens.newAccessToken, {
+      path: "/home",
+      httpOnly: true,
+    });
     res.send("ok");
   } catch (error) {
     next(error);
@@ -29,6 +32,12 @@ usersRouter.post("/register", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+usersRouter.post("/favourite", async (req, res) => {
+  try {
+    console.log("accessToken", req.cookies.accessToken);
+    await UserModel.findByIdAndUpdate({});
+  } catch (error) {}
 });
 usersRouter.get("/", jwtauth, async (req, res) => {
   const users = await UserModel.find();

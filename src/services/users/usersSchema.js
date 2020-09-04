@@ -28,6 +28,7 @@ const UserSchema = new Schema(
         },
       },
     },
+    favorites: Array,
   },
   { timestamps: true }
 );
