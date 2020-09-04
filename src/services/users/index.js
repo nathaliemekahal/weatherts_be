@@ -7,12 +7,14 @@ const bcrypt = require("bcryptjs");
 usersRouter = express.Router();
 usersRouter.post("/login", async (req, res, next) => {
   try {
+    console.log("user", req.body.password);
     const { email, password } = req.body;
     const user = await UserModel.findByCredentials(email, password);
-    console.log("user", user);
+
     const tokens = await authenticate(user);
-    console.log("tokens", tokens);
-    res.send(tokens);
+
+    res.cookie("accessToken", tokens, { httpOnly: true });
+    res.send("ok");
   } catch (error) {
     next(error);
   }
