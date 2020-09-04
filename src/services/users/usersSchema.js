@@ -44,8 +44,8 @@ const UserSchema = new Schema(
 
 UserSchema.statics.findByCredentials = async (email, password) => {
   const user = await UserModel.findOne({ email });
-  //   const isMatch = await bcrypt.compare(password, user.password);
-  if (!password === user.password) {
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
     const err = new Error("Unable to login");
     err.httpStatusCode = 401;
     throw err;
